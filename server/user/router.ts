@@ -28,6 +28,18 @@ router.get(
   }
 );
 
+router.get(
+  '/',
+  [],
+  async (req: Request, res: Response) => {
+    const users = await UserCollection.findAll();
+    res.status(200).json({
+      message: 'Your users were found successfully.',
+      users: users
+    });
+  }
+);
+
 /**
  * Sign in user.
  *

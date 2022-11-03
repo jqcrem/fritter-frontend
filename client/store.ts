@@ -46,6 +46,11 @@ const store = new Vuex.Store({
        */
       state.freets = freets;
     },
+    async refreshUsers(state) {
+      const url = '/api/users';
+      const res = await fetch(url).then(async r => r.json());
+      state.users = res;
+    },
     async refreshFreets(state) {
       /**
        * Request the server for the currently available freets.
