@@ -46,6 +46,9 @@ const store = new Vuex.Store({
        */
       state.freets = freets;
     },
+    async updateUsers(state, users) {
+      state.users = users;
+    },
     async refreshUsers(state) {
       const url = '/api/users';
       const res = await fetch(url).then(async r => r.json());

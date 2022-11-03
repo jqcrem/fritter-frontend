@@ -11,7 +11,7 @@ export default {
   },
   methods: {
     async submit() {
-      const url = this.value ? `/api/freets?author=${this.value}` : '/api/freets';
+      const url = '/api/users';
       try {
         const r = await fetch(url);
         const res = await r.json();
@@ -19,19 +19,20 @@ export default {
           throw new Error(res.error);
         }
 
-        this.$store.commit('updateFilter', this.value);
-        this.$store.commit('updateFreets', res);
+        // this.$store.commit('updateFilter', this.value);
+        console.log(this.$store.state.users);
+        this.$store.commit('updateUsers', res.users ?? []);
       } catch (e) {
-        if (this.value === this.$store.state.filter) {
-          // This section triggers if you filter to a user but they
-          // change their username when you refresh
-          this.$store.commit('updateFilter', null);
-          this.value = ''; // Clear filter to show all users' freets
-          this.$store.commit('refreshFreets');
-        } else {
-          // Otherwise reset to previous fitler
-          this.value = this.$store.state.filter;
-        }
+        // if (this.value === this.$store.state.filter) {
+        //   // This section triggers if you filter to a user but they
+        //   // change their username when you refresh
+        //   this.$store.commit('updateFilter', null);
+        //   this.value = ''; // Clear filter to show all users' freets
+        //   this.$store.commit('refreshFreets');
+        // } else {
+        //   // Otherwise reset to previous fitler
+        //   this.value = this.$store.state.filter;
+        // }
 
         this.$set(this.alerts, e, 'error');
         setTimeout(() => this.$delete(this.alerts, e), 3000);

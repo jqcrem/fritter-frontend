@@ -35,18 +35,17 @@
           <GetUsersForm
             ref="getUsersForm"
             value="author"
-            placeholder="🔍 Filter by author (optional)"
-            button="🔄 Get users"
+            button="Get users"
           />
         </div>
       </header>
       <section
         v-if="$store.state.users.length"
       >
-        <FreetComponent
-          v-for="freet in $store.state.users"
-          :key="freet.id"
-          :freet="freet"
+        <UserComponent
+          v-for="user in $store.state.users"
+          :key="user._id"
+          :user="user"
         />
       </section>
       <article
@@ -59,12 +58,12 @@
 </template>
 
 <script>
-import FreetComponent from '@/components/Users/FreetComponent.vue';
+import UserComponent from '@/components/Users/UserComponent.vue';
 import GetUsersForm from '@/components/Users/GetUsersForm.vue';
 
 export default {
   name: 'UsersPage',
-  components: {FreetComponent, GetUsersForm},
+  components: {UserComponent, GetUsersForm},
   mounted() {
     this.$refs.getUsersForm.submit();
   }

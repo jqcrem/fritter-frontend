@@ -125,7 +125,8 @@ router.post(
     let name = req.body.name ?? null
     let rootUserId = req.body.rootUserId ?? null
     let rootUsername = req.body.rootUsername ?? null
-    let phoneNumber = req.body.phoneNUmber ?? null
+    let phoneNumber = req.body.phoneNumber ?? null
+    console.log(req.body);
     const user = await UserCollection.addOne(req.body.username, req.body.password, name, rootUserId, rootUsername, phoneNumber);
     req.session.userId = user._id.toString();
     res.status(201).json({
