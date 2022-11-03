@@ -14,6 +14,7 @@
       <header>
         <h2>Account management</h2>
       </header>
+      <RegisterForm />
       <LogoutForm />
       <DeleteAccountForm />
     </section>
@@ -25,10 +26,12 @@ import ChangeUsernameForm from '@/components/Account/ChangeUsernameForm.vue';
 import ChangePasswordForm from '@/components/Account/ChangePasswordForm.vue';
 import DeleteAccountForm from '@/components/Account/DeleteAccountForm.vue';
 import LogoutForm from '@/components/Account/LogoutForm.vue';
+import RegisterForm from '@/components/Account/RegisterForm.vue';
 
 export default {
   name: 'AccountPage',
   components: {
+    RegisterForm,
     ChangeUsernameForm,
     ChangePasswordForm,
     DeleteAccountForm,

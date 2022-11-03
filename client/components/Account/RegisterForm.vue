@@ -8,15 +8,14 @@ export default {
   mixins: [BlockForm],
   data() {
     return {
-      url: '/api/users',
+      url: '/api/users/alias',
       method: 'POST',
       hasBody: true,
       setUsername: true,
       fields: [
-        {id: 'username', label: 'Username', value: ''},
-        {id: 'password', label: 'Password', value: ''},
-        {id: 'name', label: 'Name', value: ''},
-        {id: 'phoneNumber', label: 'Phone Number', value: ''}
+        {id: 'username', label: 'Alias Username', value: ''},
+        {id: 'password', label: 'Current Password', value: ''},
+        {id: 'name', label: 'Alias Name', value: ''},
       ],
       title: 'Create account',
       callback: () => {

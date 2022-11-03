@@ -103,10 +103,18 @@ router.post(
     userValidator.isUserLoggedOut,
     userValidator.isValidUsername,
     userValidator.isUsernameNotAlreadyInUse,
-    userValidator.isValidPassword
+    userValidator.isValidPassword 
+    //TODO need to add: isValidPhoneNumber
+    //TODO need to add: isValidName
   ],
   async (req: Request, res: Response) => {
-    const user = await UserCollection.addOne(req.body.username, req.body.password);
+    let username = req.body.username
+    let password = req.body.password
+    let name = req.body.name ?? null
+    let rootUserId = req.body.rootUserId ?? null
+    let rootUsername = req.body.rootUsername ?? null
+    let phoneNumber = req.body.phoneNUmber ?? null
+    const user = await UserCollection.addOne(req.body.username, req.body.password, name, rootUserId, rootUsername, phoneNumber);
     req.session.userId = user._id.toString();
     res.status(201).json({
       message: `Your account was created successfully. You have been logged in as ${user.username}`,
@@ -165,6 +173,33 @@ router.delete(
     req.session.userId = undefined;
     res.status(200).json({
       message: 'Your account has been deleted successfully.'
+    });
+  }
+);
+
+router.post(
+  '/alias',
+  [
+    userValidator.isUserLoggedIn,
+    userValidator.isValidUsername,
+    userValidator.isUsernameNotAlreadyInUse,
+    userValidator.isValidPassword
+    //TODO need to add isValidAliasParams
+    //TODO need to add isNotMaxAliasesReached
+  ],
+  async (req: Request, res: Response) => {
+    let username = req.body.username
+    let password = req.body.password
+    let name = req.body.name ?? null
+    let rootUserId = req.session.userId
+    let rootUser = await UserCollection.findOneByUserId(rootUserId);
+    let rootUsername = rootUser.username
+    let phoneNumber = req.body.phoneNumber ?? null //TODO: see how to check phone number exists for root User
+    const user = await UserCollection.addOne(username, password, name, rootUserId, rootUsername, phoneNumber);
+    req.session.userId = user._id.toString();
+    res.status(201).json({
+      message: `Your alias account was created successfully. You have been logged in as ${user.username}`,
+      user: util.constructUserResponse(user)
     });
   }
 );
