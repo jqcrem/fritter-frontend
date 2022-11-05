@@ -9,6 +9,7 @@
       <h3 class="author">
         @{{ freet.author }}
       </h3>
+      <FriendButton :username="freet.author" :button="buttonLabel" :actionType="actionType"/>
       <div
         v-if="$store.state.username === freet.author"
         class="actions"
@@ -65,6 +66,8 @@
 </template>
 
 <script>
+import FriendButton from '@/components/Friend/FriendButton.vue';
+
 export default {
   name: 'FreetComponent',
   props: {
@@ -75,11 +78,30 @@ export default {
     }
   },
   data() {
+    var buttonType = "FOLLOW";
+    var buttonLabel = "Follow";
+    if (this.$store.state.following.includes(this.freet.author)){
+      buttonType = "UNFOLLOW";
+      buttonLabel = "Unfollow";
+    }
+    else if (this.$store.state.followers.includes(this.freet.author)){
+      buttonType = "BLOCK";
+      buttonLabel = "Block";
+    } else if (this.$store.state.blocked.includes(this.freet.author)){
+      buttonType = "UNBLOCK";
+      buttonLabel = "Unblock";
+    }
+    console.log(this.$store.state.following, this.freet.author, buttonType);
     return {
       editing: false, // Whether or not this freet is in edit mode
       draft: this.freet.content, // Potentially-new content for this freet
-      alerts: {} // Displays success/error messages encountered during freet modification
+      alerts: {}, // Displays success/error messages encountered during freet modification
+      actionType: buttonType,
+      buttonLabel: buttonLabel
     };
+  },
+  components: {
+    FriendButton
   },
   methods: {
     startEditing() {

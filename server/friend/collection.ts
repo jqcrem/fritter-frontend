@@ -43,25 +43,29 @@ class FriendCollection {
   }
 
   static async deleteOne(friendID: Types.ObjectId | string): Promise<boolean> {
-    let result = FriendModel.deleteOne({_id: friendID});
+    let result = await FriendModel.deleteOne({_id: friendID});
     return result !== null;
   }
 
   static async deleteOneByPairAndStatus(userA: Types.ObjectId | string, userB: Types.ObjectId | string, status: string): Promise<boolean> {
-    let result = FriendModel.deleteOne({userA, userB, status});
+    let result = await FriendModel.deleteOne({userA, userB, status});
     return result !== null;
   }
 
   static async findFriendByPairAndStatus(userA: Types.ObjectId | string, userB: Types.ObjectId | string, status: string): Promise<HydratedDocument<Friend>>{
-    return FriendModel.findOne({userA, userB, status});
+    let x = await FriendModel.findOne({userA, userB, status});
+    console.log('find by pair', x);
+    return x;
   }
 
   static async findFriendByPair(userA: Types.ObjectId | string, userB: Types.ObjectId | string): Promise<HydratedDocument<Friend>> {
-    return FriendModel.findOne({userA, userB})
+    return await FriendModel.findOne({userA, userB})
   }
 
   static async findAllFriendsByStatus(userA: Types.ObjectId | string, status: string): Promise<Array<HydratedDocument<Friend>>> {
-    return FriendModel.find({userA: userA, status: status});
+    console.log(userA, status);
+    const result = FriendModel.find({userA: userA, status: status});
+    return result;
   }
 }
 

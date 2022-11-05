@@ -21,6 +21,7 @@ export default {
 
         this.$store.commit('updateFilter', this.value);
         this.$store.commit('updateFreets', res);
+        console.log('FREETSFREETS:', res);
       } catch (e) {
         if (this.value === this.$store.state.filter) {
           // This section triggers if you filter to a user but they

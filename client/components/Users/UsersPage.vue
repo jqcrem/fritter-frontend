@@ -35,7 +35,22 @@
           <GetUsersForm
             ref="getUsersForm"
             value="author"
-            button="Get users"
+            button="Get All Users"
+          />
+          <GetFriendsByType 
+            ref="getFriendsByType"
+            button="People you're following"
+            status="FOLLOWING"
+          />
+          <GetFriendsByType 
+            ref="getFriendsByType"
+            button="Your Followers"
+            status="FOLLOWER"
+          />
+          <GetFriendsByType 
+            ref="getFriendsByType"
+            button="Blocked users"
+            status="BLOCKED"
           />
         </div>
       </header>
@@ -60,10 +75,11 @@
 <script>
 import UserComponent from '@/components/Users/UserComponent.vue';
 import GetUsersForm from '@/components/Users/GetUsersForm.vue';
+import GetFriendsByType from '@/components/Users/GetFriendsByType.vue';
 
 export default {
   name: 'UsersPage',
-  components: {UserComponent, GetUsersForm},
+  components: {UserComponent, GetUsersForm, GetFriendsByType},
   mounted() {
     this.$refs.getUsersForm.submit();
   }

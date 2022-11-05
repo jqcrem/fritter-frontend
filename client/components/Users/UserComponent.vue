@@ -5,10 +5,15 @@
   <article
     class="freet"
   >
-    <header>
+    <header class="userheader">
       <h3 class="author">
         {{ user.name ?? '' }}
       </h3>
+         <p 
+        class="content"
+      >
+        &nbsp @{{ user.username }}
+      </p>
     </header>
 <!--     <textarea
       v-if="editing"
@@ -16,11 +21,6 @@
       :value="draft"
       @input="draft = $event.target.value"
     /> -->
-    <p
-      class="content"
-    >
-      @{{ user.username }}
-    </p>
     <p class="info">
       Joined on {{ user.dateJoined }}
     </p>
@@ -133,5 +133,9 @@ export default {
     border: 1px solid #111;
     padding: 20px;
     position: relative;
+}
+.userheader {
+  display:  flex;
+  text-align:  end;
 }
 </style>

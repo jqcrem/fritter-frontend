@@ -3,6 +3,7 @@ import express from 'express';
 import FriendCollection from './collection';
 import * as friendValidator from './middleware';
 import * as userValidator from '../user/middleware';
+import UserCollection from '../user/collection';
 // import * as freetValidator from '../freet/middleware';
 // import * as util from './util';
 
@@ -35,9 +36,9 @@ router.post(
     friendValidator.alreadyFriends,
   ],
   async (req: Request, res: Response) => {
-    console.log('got hereee');
     const userA = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
     const userB  = (req.body.userB as string) ?? '';  
+    console.log("USER B", userB);
     const followerRel = await FriendCollection.addOne(userA, userB, "FOLLOWING");
     const followingRel = await FriendCollection.addOne(userB, userA, "FOLLOWER");
 
@@ -47,6 +48,29 @@ router.post(
     });
   }
 );
+//Friend someone
+// router.post(
+//   '/byUsername',
+//   [
+//     userValidator.isUserLoggedIn,
+//   ],
+//   async (req: Request, res: Response) => {
+//     console.log(req);
+//     const userA = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+//     console.log('ok got here');
+//     const userBUsername  = (req.body.userB as string) ?? '';  
+//     console.log(userBUsername);
+//     const userBRes = await UserCollection.findOneByUsername(userBUsername);
+//     const userB = userBRes._id;
+//     const followerRel = await FriendCollection.addOne(userA, userB, "FOLLOWING");
+//     const followingRel = await FriendCollection.addOne(userB, userA, "FOLLOWER");
+
+//     res.status(201).json({
+//       message: 'Your friend was created successfully.',
+//       response: [followerRel, followingRel]
+//     });
+//   }
+// );
 
 
 // /**

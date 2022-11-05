@@ -3,6 +3,7 @@ import express from 'express';
 import FreetCollection from '../freet/collection';
 import UserCollection from './collection';
 import * as userValidator from '../user/middleware';
+import FriendCollection from '../friend/collection';
 import * as util from './util';
 
 const router = express.Router();
@@ -40,6 +41,30 @@ router.get(
   }
 );
 
+router.post(
+  '/username',
+  [],
+  async (req: Request, res: Response) => {
+    const user = await UserCollection.findOneByUsername(req.body.username);
+    res.status(200).json({
+      message: 'User found',
+      user: user
+    });
+  }
+);
+
+router.post(
+  '/id',
+  [],
+  async (req: Request, res: Response) => {
+    const user = await UserCollection.findOneByUserId(req.body.userId);
+    res.status(200).json({
+      message: 'User found',
+      user: user
+    });
+  }
+);
+
 /**
  * Sign in user.
  *
@@ -70,6 +95,33 @@ router.post(
     res.status(201).json({
       message: 'You have logged in successfully',
       user: util.constructUserResponse(user)
+    });
+  }
+);
+
+
+
+router.post(
+  '/userfriends/:status',
+  [userValidator.isUserLoggedIn,],
+  async (req: Request, res: Response) => {
+    let status = req.params.status;
+    let currentUser = req.session.userId;
+    const friends = await FriendCollection.findAllFriendsByStatus(currentUser, status);
+    var final_result = []
+    if (status == 'FOLLOWING' || status == 'FOLLOWER' || status == 'BLOCKED'){
+      for (const obj of friends){
+        console.log(obj);
+        const userId = obj.userB;
+        const fullUser = await UserCollection.findOneByUserId(userId);
+        final_result.push(fullUser);
+      }
+    }
+    res.status(201).json({
+      message: `Your friends have been found`,
+      users: final_result,
+      status: status,
+      currentuser: currentUser
     });
   }
 );
@@ -216,5 +268,6 @@ router.post(
     });
   }
 );
+
 
 export {router as userRouter};

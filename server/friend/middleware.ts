@@ -43,7 +43,8 @@ const statusValid = async (req: Request, res: Response, next: NextFunction) => {
 const alreadyFriends = async (req: Request, res: Response, next: NextFunction) => {
   const userB = req.body.userB
   const userA = req.session.userId
-  const existingFriendship = FriendCollection.findFriendByPairAndStatus(userA, userB, 'FOLLOWING');
+  const existingFriendship = await FriendCollection.findFriendByPairAndStatus(userA, userB, 'FOLLOWING');
+  console.log('existing friendship', existingFriendship);
   if (existingFriendship){
     res.status(401).json({
       error: 'Friendship already exists'

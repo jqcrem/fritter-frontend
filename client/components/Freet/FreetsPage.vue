@@ -66,6 +66,9 @@ import GetFreetsForm from '@/components/Freet/GetFreetsForm.vue';
 export default {
   name: 'FreetPage',
   components: {FreetComponent, GetFreetsForm, CreateFreetForm},
+  created() {
+    this.$store.commit('refreshFriends');
+  },
   mounted() {
     this.$refs.getFreetsForm.submit();
   }
