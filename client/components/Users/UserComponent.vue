@@ -14,7 +14,9 @@
       >
         &nbsp @{{ user.username }}
       </p>
+
     </header>
+    <FriendButton :username="user.username" :button="buttonLabel" :actionType="actionType"/>
 <!--     <textarea
       v-if="editing"
       class="content"
@@ -28,6 +30,8 @@
 </template>
 
 <script>
+import FriendButton from '@/components/Friend/FriendButton.vue';
+
 export default {
   name: 'UserComponent',
   props: {
@@ -38,10 +42,28 @@ export default {
     }
   },
   data() {
+    var buttonType = "FOLLOW";
+    var buttonLabel = "Follow";
+    if (this.$store.state.following.includes(this.user.username)){
+      buttonType = "UNFOLLOW";
+      buttonLabel = "Unfollow";
+    }
+    else if (this.$store.state.followers.includes(this.user.username)){
+      buttonType = "BLOCK";
+      buttonLabel = "Block";
+    } else if (this.$store.state.blocked.includes(this.user.username)){
+      buttonType = "UNBLOCK";
+      buttonLabel = "Unblock";
+    }
+    console.log(this.$store.state.following, this.user.username, buttonType);
     return {
-      // editing: false, // Whether or not this freet is in edit mode
-      // draft: this.freet.content, // Potentially-new content for this freet
+      alerts: {}, // Displays success/error messages encountered during freet modification
+      actionType: buttonType,
+      buttonLabel: buttonLabel
     };
+  },
+  components: {
+    FriendButton
   },
   methods: {
     // startEditing() {
