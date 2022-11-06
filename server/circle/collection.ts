@@ -52,7 +52,7 @@ class CircleCollection {
    * @return {Promise<HydratedDocument<Circle>> | Promise<null> } - The circle with the given circleId, if any
    */
   static async findOne(circleId: Types.ObjectId | string): Promise<HydratedDocument<Circle>> {
-    const circle = await CircleModel.findOne({_id: circleId}).populate('authorId');
+    const circle = await CircleModel.findOne({_id: circleId}).populate('authorId').populate('members').populate('access');
     return circle;
   }
 
@@ -63,7 +63,7 @@ class CircleCollection {
    * @return {Promise<HydratedDocument<Circle>[]>} - An array of all of the circles
    */
   static async findAll(): Promise<Array<HydratedDocument<Circle>>> {
-    return CircleModel.find({}).populate('authorId');
+    return CircleModel.find({}).populate('authorId').populate('members').populate('access');
   }
 
   /**
@@ -74,7 +74,7 @@ class CircleCollection {
    */
   static async findAllOwnedByUsername(username: string): Promise<Array<HydratedDocument<Circle>>> {
     const author = await UserCollection.findOneByUsername(username);
-    return CircleModel.find({authorId: author._id}).populate('authorId');
+    return CircleModel.find({authorId: author._id}).populate('authorId').populate('members').populate('access');
   }
 
   /**
@@ -105,7 +105,7 @@ class CircleCollection {
 
   //Find all by member
   static async findAllByMember(memberId: Types.ObjectId | string): Promise<Array<HydratedDocument<Circle>>> {
-    return CircleModel.find({members: memberId}).populate('authorId');
+    return CircleModel.find({members: memberId}).populate('authorId').populate('members').populate('access');
   }
 
   //Add a member to circle

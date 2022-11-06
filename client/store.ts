@@ -16,6 +16,7 @@ const store = new Vuex.Store({
     following: [],
     blocked: [],
     username: null, // Username of the logged in user
+    password: null,
     alerts: {} // global success/error messages encountered during submissions to non-visible forms
   },
   mutations: {
@@ -34,6 +35,9 @@ const store = new Vuex.Store({
        * @param username - new username to set
        */
       state.username = username;
+    },
+    setPassword(state, password) {
+      state.password = password;
     },
     updateFilter(state, filter) {
       /**

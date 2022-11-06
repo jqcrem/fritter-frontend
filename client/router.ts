@@ -4,6 +4,7 @@ import FreetsPage from './components/Freet/FreetsPage.vue';
 import AccountPage from './components/Account/AccountPage.vue';
 import LoginPage from './components/Login/LoginPage.vue';
 import UsersPage from './components/Users/UsersPage.vue';
+import CirclePage from './components/Circles/CirclePage.vue';
 import NotFound from './NotFound.vue';
 
 Vue.use(VueRouter);
@@ -13,6 +14,7 @@ const routes = [
   {path: '/account', name: 'Account', component: AccountPage},
   {path: '/login', name: 'Login', component: LoginPage},
   {path: '/users', name: 'Users', component: UsersPage},
+  {path: '/circles', name: 'Circles', component:CirclePage},
   {path: '*', name: 'Not Found', component: NotFound}
 ];
 

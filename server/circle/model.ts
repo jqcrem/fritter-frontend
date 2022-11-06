@@ -31,11 +31,13 @@ const CircleSchema = new Schema<Circle>({
   // The content of the freet
   members: [{
     type: Schema.Types.ObjectId,
+    required: true,
     ref: 'User'
   }],
   // The date the freet was modified
   access: [{
     type: Schema.Types.ObjectId,
+    required: true,
     ref: 'User'
   }],
   accessKeys: [{

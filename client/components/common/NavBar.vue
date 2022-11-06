@@ -22,6 +22,12 @@
         to="/account"
       >
         Account
+      </router-link>      
+      <router-link
+        v-if="$store.state.username"
+        to="/circles"
+      >
+        Circles
       </router-link>
       <router-link
         v-else

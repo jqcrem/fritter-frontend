@@ -46,6 +46,13 @@ class UserCollection {
     return UserModel.find();
   }
 
+  static async findAllByRootUser(id: Types.ObjectId): Promise<Array<HydratedDocument<User>>> {
+    const users = await UserModel.find({
+      rootUserId: id,
+    });
+    return users;
+  }
+
 
   /**
    * Find a user by userId.

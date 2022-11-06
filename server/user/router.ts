@@ -126,6 +126,24 @@ router.post(
   }
 );
 
+router.get(
+  '/alias',
+  [
+    userValidator.isUserLoggedIn,
+  ],
+  async (req: Request, res: Response) => {
+    console.log('here');
+    let fulluser = await UserCollection.findOneByUserId(req.session.userId);
+    const userId = fulluser.rootUserId ? fulluser.rootUserId : req.session.userId;
+    let aliases = await UserCollection.findAllByRootUser(userId);
+
+    res.status(200).json({
+      message: 'You found your aliases.',
+      aliases: aliases
+    });
+  }
+);
+
 /**
  * Sign out a user
  *

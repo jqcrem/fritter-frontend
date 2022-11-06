@@ -98,6 +98,7 @@ export default {
           const text = await r.text();
           const res = text ? JSON.parse(text) : {user: null};
           this.$store.commit('setUsername', res.user ? res.user.username : null);
+          this.$store.commit('setPassword', res.user ? res.user.password : null);
         }
 
         if (this.refreshFreets) {
