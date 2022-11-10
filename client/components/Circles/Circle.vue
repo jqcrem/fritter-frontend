@@ -26,7 +26,10 @@
       </div>
   </section>
 </template>
+<!-- //Next up: make editCircle component -- more or less same as current, but can add and delete people (save button is what saves it). Make textbox for adding user (add by username)
 
+//Finally: add freet access reactivity based on permissions
+ -->
 <script>
 
 export default {

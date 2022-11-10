@@ -16,7 +16,7 @@
         <CirclesList :circleData="circles" />
       </section>
       <section v-else>
-       HELLO
+       LOADING CIRCLES...
       </section>
     </section>
   </main>
