@@ -10,13 +10,14 @@
           </h2>
         </div>
         <div class="right">
+          <Button @click="addCircleNew">Add new circle</Button>
         </div>
       </header>
       <section v-if="circles.length">
         <CirclesList :circleData="circles" />
       </section>
       <section v-else>
-       LOADING CIRCLES...
+       LOADING
       </section>
     </section>
   </main>
@@ -33,9 +34,16 @@ export default {
       circles: []
     }
   },
+  methods: {
+    async addCircleNew() {
+      var newCircle = await fetch('/api/circles/', {method: "POST", body: JSON.stringify({access: [], members: []})}).then(r => r.json());
+      this.circles.push(newCircle.circle);
+      console.log(newCircle.circle)
+    }
+  },
   async mounted() {
     //Populate the circles data
-    var r = await fetch('/api/circles/').then(async r => r.json());
+    var r = await fetch(`/api/circles/`).then(async r => r.json());
     this.circles = r;
     console.log(this.circles);
   }

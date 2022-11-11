@@ -64,7 +64,7 @@ class FriendCollection {
 
   static async findAllFriendsByStatus(userA: Types.ObjectId | string, status: string): Promise<Array<HydratedDocument<Friend>>> {
     console.log(userA, status);
-    const result = FriendModel.find({userA: userA, status: status});
+    const result = await FriendModel.find({userA: userA, status: status}).populate('userB')
     return result;
   }
 }

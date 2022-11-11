@@ -31,21 +31,11 @@ const router = express.Router();
  */
 router.get(
   '/',
-  async (req: Request, res: Response, next: NextFunction) => {
-    // Check if authorId query parameter was supplied
-    if (req.query.author !== undefined) {
-      next();
-      return;
-    }
-
-    const allCircles = await CircleCollection.findAll();
-    res.status(200).json(allCircles);
-  },
   [
-    userValidator.isAuthorExists
+    // userValidator.isAuthorExists
   ],
   async (req: Request, res: Response) => {
-    const authorCircles = await CircleCollection.findAllOwnedByUsername(req.query.author as string);
+    const authorCircles = await CircleCollection.findAllOwnedByUserId(req.session.userId);
     res.status(200).json(authorCircles);
   }
 );
@@ -65,17 +55,32 @@ router.post(
   '/',
   [
     userValidator.isUserLoggedIn,
-    circleValidator.isValidCircleContent
   ],
   async (req: Request, res: Response) => {
     const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
-    const members = req.body.members;
-    const access = req.body.access;
+    const members = req.body.members ?? [];
+    const access = req.body.access ?? [];
     const circle = await CircleCollection.addOne(userId, members, access);
 
     res.status(201).json({
       message: 'Your circle was created successfully.',
       circle: circle
+    });
+  }
+);
+
+router.get(
+  '/:circleId?',
+  [
+    userValidator.isUserLoggedIn,
+    circleValidator.isCircleExists,
+    circleValidator.isValidCircleModifier
+  ],
+  async (req: Request, res: Response) => {
+    let result = await CircleCollection.findOne(req.params.circleId);
+    res.status(200).json({
+      message: 'Your circle was found successfully.',
+      result: result,
     });
   }
 );
@@ -99,6 +104,22 @@ router.delete(
   ],
   async (req: Request, res: Response) => {
     await CircleCollection.deleteOne(req.params.circleId);
+    res.status(200).json({
+      message: 'Your circle was deleted successfully.'
+    });
+  }
+);
+
+router.put(
+  '/:circleId?',
+  [
+    // userValidator.isUserLoggedIn,
+    // circleValidator.isCircleExists,
+    // circleValidator.isValidCircleModifier
+  ],
+  async (req: Request, res: Response) => {
+    console.log('req body', req.body, req.params);
+    await CircleCollection.updateOne(req.params.circleId, req.body.circle);
     res.status(200).json({
       message: 'Your circle was deleted successfully.'
     });

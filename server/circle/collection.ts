@@ -20,6 +20,10 @@ class CircleCollection {
    * @param {string} content - The id of the content of the circle
    * @return {Promise<HydratedDocument<Circle>>} - The newly created circle
    */
+  // static async findOne(circleId: Types.ObjectId | string): Promise<HydratedDocument<Circle>> {
+  //   return await CircleModel.findOne({_id: circleId});
+  // }
+
   static async addOne(authorId: Types.ObjectId | string, members: Types.ObjectId[], access: Types.ObjectId[]): Promise<HydratedDocument<Circle>> {
     const user = await UserCollection.findOneByUserId(authorId);
     var accessKeys = []
@@ -41,7 +45,7 @@ class CircleCollection {
 
   //UP NEXT: TODO: (find all by user ID) AND (find one by CircleModelId)
   static async findAllOwnedByUserId(authorId: Types.ObjectId | string): Promise<HydratedDocument<Circle>[]> {
-    const circles = await CircleModel.find({authorId: authorId});
+    const circles = await CircleModel.find({authorId: authorId}).populate('authorId').populate('members').populate('access');
     return circles;
   }
 
@@ -74,6 +78,7 @@ class CircleCollection {
    */
   static async findAllOwnedByUsername(username: string): Promise<Array<HydratedDocument<Circle>>> {
     const author = await UserCollection.findOneByUsername(username);
+    console.log(author._id);
     return CircleModel.find({authorId: author._id}).populate('authorId').populate('members').populate('access');
   }
 
@@ -87,7 +92,12 @@ class CircleCollection {
    
   static async updateOne(circleId: Types.ObjectId | string, details: any): Promise<HydratedDocument<Circle>> {
     const circle = await CircleModel.findOne({_id: circleId});
-    //TODO add details checking and updating here
+    if (details.access){
+      circle.access  = details.access;
+    }
+    if (details.members){
+      circle.members  = details.members;
+    }
     await circle.save();
     return circle.populate('authorId');
   }
